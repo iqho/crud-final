@@ -26,18 +26,23 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $photo = $request->image;
-        $photoname = uniqid() . '.' . $photo->getClientOriginalExtension();
-        $request->image->move(public_path('images'), $photoname);
+        $image = $request->image;
+        if($image){
+            $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+        }
+        else{
+            $imageName = Null;
+        }
 
         $product= new Product();
           $product->category_id = $request->category_id;
           $product->name = $request->name;
           $product->price = $request->price;
-          $product->image = $photoname;
+          $product->image = $imageName;
           $product->description = $request->description;
           $product->save();
-    
+
       return redirect('products')->with('status','Product Created');
     }
 
