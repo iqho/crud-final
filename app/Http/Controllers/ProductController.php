@@ -27,6 +27,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $image = $request->image;
+
         if($image){
             $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
@@ -43,7 +44,7 @@ class ProductController extends Controller
           $product->description = $request->description;
           $product->save();
 
-      return redirect('products')->with('status','Product Created');
+      return redirect('products')->with('status','Product Created Successfully !');
     }
 
     public function show($id)
