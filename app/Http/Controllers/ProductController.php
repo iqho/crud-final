@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
@@ -26,42 +27,85 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $image = $request->image;
+        try {
+            $image = $request->image;
 
-        if($image){
-            $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
+            if($image){
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+            }
+            else{
+                $imageName = Null;
+            }
+
+            $product= new Product();
+            $product->category_id = $request->category_id;
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->image = $imageName;
+            $product->description = $request->description;
+            $product->save();
         }
-        else{
-            $imageName = Null;
+          catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062) {           
+                return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
+            } else {
+                return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . json_encode($e->getMessage(), true)]);
+            }
         }
-
-        $product= new Product();
-          $product->category_id = $request->category_id;
-          $product->name = $request->name;
-          $product->price = $request->price;
-          $product->image = $imageName;
-          $product->description = $request->description;
-          $product->save();
-
       return redirect('products')->with('status','Product Created Successfully !');
     }
 
     public function show(Product $product)
     {
-        //
+        $viewBag['product'] = $product;
+
+        return view('products.show',$viewBag);
     }
 
     public function edit(Product $product)
     {
         $viewBag['product'] = $product;
         $viewBag['categories'] = Category::where('is_active', 1)->get(['id', 'category_name']);
+
         return view('products.edit',$viewBag);
     }
 
     public function update(Request $request, Product $product)
     {
-        //
+        try {
+
+            $image = $request->file('image');
+
+            if ($image) {
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+
+                if ($product->image !== null) {
+                    unlink(public_path('images/'. $product->image ));
+                }
+                $product->image = $imageName;
+            }
+
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->is_active = $request->is_active ? $request->is_active : 0;
+            $product->category_id = $request->category_id;
+            $product->price = $request->price;
+
+            $product->update();
+
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062) {           
+                return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
+            } else {
+                return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . json_encode($e->getMessage(), true)]);
+            }
+        }
+
+        return redirect()->route('products.index')->with('status', 'Product Updated Successfully.');
     }
 
     public function destroy(Product $product)
@@ -73,6 +117,15 @@ class ProductController extends Controller
        $product->delete();
         
         return redirect('products')->with('status','Product Delete Successfully !');
+    }
+
+    public function ChangeStatus(Request $request)
+    {
+        $product = Product::find($request->product_id);
+        $product->is_active = $request->status;
+        $product->save();
+
+        return response()->json(['success' => 'Product Active Status Change Successfully.']);
     }
    
 }

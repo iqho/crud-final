@@ -8,8 +8,9 @@
         <div class="col-md-12">
             <a href="{{ route('products.index') }}" class="btn btn-success mb-3">Back</a>
 
-            <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
                  @csrf
+                 @method('PATCH')
 
                 <div class="row justify-content-center">
                     <div class="col-12 w-75">
@@ -21,6 +22,16 @@
 
                             <div class="card-body">
 
+                                @if ($errors->any())
+                                    <div class="alert alert-danger p-1 m-0">
+                                        <ul class="g-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                            
                                 <div class="form-group row p-3">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                                     <div class="col-md-8">
@@ -72,7 +83,6 @@
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div> <!-- /.card -->
