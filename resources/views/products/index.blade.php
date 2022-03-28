@@ -21,7 +21,8 @@
                     <table id="datatable" class="display table table-sm">
                         <thead>
                         <tr>
-                              <th>SL No</th>
+                              <th style="width:5%;" >SL No</th>
+                              <th>Image</th>
                               <th>Category</th>
                               <th>Name</th>
                               <th>Price</th>
@@ -32,7 +33,8 @@
                     <tbody>
                         @foreach($products as  $key => $product)
                         <tr>
-                              <td>{{ ++$key }}</td>
+                              <td style="width: 5%;">{{ ++$key }}</td>
+                              <td> <img src="{{ asset('images/'.$product->image) }}" height="40" width="45">  </td>
                               <td>{{ optional($product->category)->category_name ?? 'null' }}</td>
                               <td>{{ $product->name}}</td>
                               <td>{{ $product->price}}</td>
@@ -55,7 +57,7 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete entry?')"><i class="fa fa-trash"></i></button>
                                         </form>
                                     </div>
                               </td>

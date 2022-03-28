@@ -11,17 +11,17 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $data['products'] = Product::get(['id', 'name', 'category_id', 'price', 'image', 'is_active']);
-        $data['categories'] = Category::get(['id', 'category_name']);
+        $viewBag['products'] = Product::get(['id', 'name', 'category_id', 'price', 'image', 'is_active']);
+        $viewBag['categories'] = Category::get(['id', 'category_name']);
 
-        return view('products.index', $data);
+        return view('products.index', $viewBag);
     }
 
     public function create()
     {
-        $data['categories'] = Category::where('is_active', 1)->get(['id', 'category_name']);
+        $viewBag['categories'] = Category::where('is_active', 1)->get(['id', 'category_name']);
 
-        return view('products.create', $data);
+        return view('products.create', $viewBag);
     }
 
     public function store(Request $request)
@@ -47,23 +47,32 @@ class ProductController extends Controller
       return redirect('products')->with('status','Product Created Successfully !');
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
         //
     }
 
-    public function edit($id)
+    public function edit(Product $product)
+    {
+        $viewBag['product'] = $product;
+        $viewBag['categories'] = Category::where('is_active', 1)->get(['id', 'category_name']);
+        return view('products.edit',$viewBag);
+    }
+
+    public function update(Request $request, Product $product)
     {
         //
     }
 
-    public function update(Request $request, $id)
+    public function destroy(Product $product)
     {
-        //
+        $image=$product->image;
+        if($image){          
+            unlink(public_path('images/'. $image ));
+        }
+       $product->delete();
+        
+        return redirect('products')->with('status','Product Delete Successfully !');
     }
-
-    public function destroy($id)
-    {
-        //
-    }
+   
 }
