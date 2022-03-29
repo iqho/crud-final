@@ -41,7 +41,7 @@
                                     <label for="category" class="col-md-4 col-form-label text-md-right">Category</label>
                                     <div class="col-md-8">
                                         <select class="form-control" name="category_id">
-                                            <option >== Choose Category ==</option>
+                                            <option value="" >== Choose Category ==</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                             @endforeach

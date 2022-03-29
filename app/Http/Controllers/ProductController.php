@@ -55,7 +55,7 @@ class ProductController extends Controller
             if ($errorCode == 1062) {           
                 return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
             } else {
-                return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . json_encode($e->getMessage(), true)]);
+                return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
             }
         }
       return redirect('products')->with('status','Product Created Successfully !');
@@ -79,7 +79,6 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, Product $product)
     {
         try {
-
             $image = $request->file('image');
 
             if ($image) {
