@@ -14,7 +14,8 @@ class ProductStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }
 }

@@ -7,6 +7,6 @@ Route::get('/', function () {
     return view('layouts.app');
 });
 
-Route::patch('products/change-status', [ProductController::class, 'ChangeStatus'])->name('product.changeStatus');
+Route::get('products/change-status', [ProductController::class, 'changeStatus'])->name('product.changeStatus');
 
 Route::resource('products', ProductController::class);

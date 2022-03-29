@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Product;
+
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\QueryException;
+use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
+
 
 class ProductController extends Controller
 {
@@ -25,7 +29,7 @@ class ProductController extends Controller
         return view('products.create', $viewBag);
     }
 
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
         try {
             $image = $request->image;
@@ -72,7 +76,7 @@ class ProductController extends Controller
         return view('products.edit',$viewBag);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
         try {
 
@@ -83,7 +87,7 @@ class ProductController extends Controller
                 $image->move(public_path('images'), $imageName);
 
                 if ($product->image !== null) {
-                    unlink(public_path('images/'. $product->image ));
+                    File::delete(public_path('images/'. $product->image ));
                 }
                 $product->image = $imageName;
             }
@@ -112,14 +116,14 @@ class ProductController extends Controller
     {
         $image=$product->image;
         if($image){          
-            unlink(public_path('images/'. $image ));
+            File::delete(public_path('images/'. $image ));
         }
        $product->delete();
         
         return redirect('products')->with('status','Product Delete Successfully !');
     }
 
-    public function ChangeStatus(Request $request)
+    public function changeStatus(Request $request)
     {
         $product = Product::find($request->product_id);
         $product->is_active = $request->status;
