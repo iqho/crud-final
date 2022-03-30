@@ -1,4 +1,4 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
 @section('title','Products')
 
@@ -10,7 +10,7 @@
                     <a class="btn btn-primary" href="{{ route('products.create') }}">Add Product</a>
                 </div>
                 <div class="card">
-                    <div class="card-header">{{ __('Products List') }}</div>
+                    <div class="card-header"><h5>Products List</h5></div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -37,12 +37,12 @@
                                 @foreach($products as  $key => $product)
                                     <tr>
                                         <td style="width: 5%;">{{ ++$key }}</td>
-                                        <td> 
+                                        <td>
                                             @if ($product->image)
                                                 <img src="{{ asset('images/'.$product->image) }}" height="25" width="40">
                                             @else
                                                 <small>No Image</small>
-                                            @endif  
+                                            @endif
                                         </td>
                                         <td>{{ optional($product->category)->category_name ?? 'null' }}</td>
                                         <td>{{ $product->name}}</td>
@@ -52,12 +52,12 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('products.show', $product->id) }}"class="btn btn-sm btn-primary me-1"> <i class="fa fa-eye"></i></a>
-                                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-info me-1"> <i class="fa fa-edit"></i></a>
+                                                <a href="{{ route('products.show', $product->id) }}"class="btn btn-primary me-1"> <i class="fa fa-eye"></i></a>
+                                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-info me-1"> <i class="fa fa-edit"></i></a>
                                                 <form action="{{ route('products.destroy', $product->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    
+
                                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Delete entry?')"><i class="fa fa-trash"></i></button>
                                                 </form>
                                             </div>
