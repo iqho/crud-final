@@ -22,7 +22,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $viewBag['categories'] = Category::where('is_active', 1)->get(['id', 'category_name']);
+        $viewBag['categories'] = Category::where('is_active', true)->get(['id', 'category_name']);
 
         return view('products.create', $viewBag);
     }
@@ -30,14 +30,12 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request)
     {
         try {
-            $image = $request->image;
+            $image = $request->file('image');
+            $imageName = Null;
 
             if($image){
                 $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('images'), $imageName);
-            }
-            else{
-                $imageName = Null;
             }
 
             $product= new Product();
@@ -49,12 +47,15 @@ class ProductController extends Controller
             $product->save();
 
         }catch (QueryException $e) {
-            $errorCode = $e->errorInfo[1];
-            if ($errorCode == 1062) {
-                return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
-            } else {
-                return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
-            }
+
+            return redirect()->back()->withErrors(['errors' => 'Unable to process request. Error:' . $e->getMessage()]);
+
+            // $errorCode = $e->errorInfo[1];
+            // if ($errorCode == 1062) {
+            //     return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
+            // } else {
+            //     return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
+            // }
         }
 
       return redirect('products')->with('status','Product Created Successfully !');
@@ -70,7 +71,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $viewBag['product'] = $product;
-        $viewBag['categories'] = Category::where('is_active', 1)->get(['id', 'category_name']);
+        $viewBag['categories'] = Category::where('is_active', true)->get(['id', 'category_name']);
 
         return view('products.edit', $viewBag);
     }
@@ -98,12 +99,7 @@ class ProductController extends Controller
             $product->update();
 
         } catch (QueryException $e) {
-            $errorCode = $e->errorInfo[1];
-            if ($errorCode == 1062) {
-                return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
-            } else {
-                return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
-            }
+            return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
         }
 
         return redirect()->route('products.index')->with('status', 'Product Updated Successfully.');
@@ -111,11 +107,11 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $image=$product->image;
-        if($image){
-            File::delete(public_path('images/'. $image ));
-        }
+        $image = $product->image;
 
+        if($image){
+            File::delete(public_path('images/'. $image));
+        }
        $product->delete();
 
         return redirect('products')->with('status','Product Delete Successfully !');
