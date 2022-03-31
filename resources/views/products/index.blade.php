@@ -24,7 +24,7 @@
                         <table id="datatable" class="display table table-sm">
                             <thead>
                                 <tr>
-                                    <th style="width:5%;" >SL</th>
+                                    <th>SL</th>
                                     <th>Image</th>
                                     <th>Category</th>
                                     <th>Name</th>
@@ -36,7 +36,7 @@
                             <tbody>
                                 @foreach($products as  $key => $product)
                                     <tr>
-                                        <td style="width: 5%;">{{ ++$key }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>
                                             @if ($product->image)
                                                 <img src="{{ asset('images/'.$product->image) }}" height="25" width="40">
