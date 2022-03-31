@@ -18,7 +18,6 @@
 
         <!-- DataTables  CDN -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
     </head>
 
     <body class="container">
@@ -53,7 +52,6 @@
         </div>
 
         <script type="text/javascript">
-
             $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
             $(document).ready(function() {
                 $('#datatable').DataTable();
