@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('home');
 });
 
 Route::get('products', [ProductController::class, 'index'])->name('products.index');
@@ -15,4 +15,5 @@ Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name(
 Route::patch('products/{product} ', [ProductController::class, 'update'])->name('products.update');
 Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-Route::get('products/change-status', [ProductController::class, 'changeStatus'])->name('product.changeStatus');
+Route::get('product/change-status', [ProductController::class, 'changeStatus'])->name('product.changeStatus');
+

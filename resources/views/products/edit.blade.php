@@ -17,10 +17,10 @@
                 @csrf
                 @method('PATCH')
 
-                <div class="card card-primary">
+                <div class="card">
 
                     <div class="card-header">
-                        <h3 class="card-title">Update Product</h3>
+                        <h4 class="card-title">Update Product</h4>
                     </div>
 
                     <div class="card-body">
@@ -36,36 +36,36 @@
                         @endif
 
                         <div class="form-group row p-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
-                            <div class="col-md-8">
+                            <label for="name" class="col-md-2 col-form-label">Name</label>
+                            <div class="col-md-10">
                                 <input type="text" id="name" class="form-control" value="{{ $product->name }}" name="name"
                                 placeholder="Enter Product name" required autofocus>
                             </div>
                         </div>
 
                         <div class="form-group row p-3">
-                            <label for="category" class="col-md-4 col-form-label text-md-right">Category</label>
-                            <div class="col-md-8">
+                            <label for="category" class="col-md-2 col-form-label">Category</label>
+                            <div class="col-md-10">
                                 <select class="form-control" name="category_id">
-                                    <option >== Choose Category ==</option>
+                                    <option value="">Choose Category</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"   @if ($category->id == $product->category_id) selected @endif >{{ $category->category_name }}</option>
+                                        <option value="{{ $category->id }}" @if($category->id == $product->category_id) selected @endif >{{ $category->category_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row p-3">
-                            <label for="price" class="col-md-4 col-form-label text-md-right">Price</label>
-                            <div class="col-md-8">
+                            <label for="price" class="col-md-2 col-form-label">Price</label>
+                            <div class="col-md-10">
                                 <input type="number" id="price" class="form-control" value="{{ $product->price }}" name="price"
                                 placeholder="Enter Product price">
                             </div>
                         </div>
 
                         <div class="form-group row p-3">
-                            <label for="image" class="col-md-4 col-form-label text-md-right">Image</label>
-                            <div class="col-md-6">
+                            <label for="image" class="col-md-2 col-form-label">Image</label>
+                            <div class="col-md-8">
                                 <input type="file" id="image" class="form-control" value="{{ old('image') }}" name="image">
                             </div>
                             <div class="col-md-2">
@@ -75,8 +75,8 @@
                         </div>
 
                         <div class="form-group row p-3">
-                            <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
-                            <div class="col-md-8">
+                            <label for="description" class="col-md-2 col-form-label">Description</label>
+                            <div class="col-md-10">
                                 <textarea type="text" id="description" class="form-control" name="description"
                                 placeholder="Enter Product Details" >{{ $product->description }}</textarea>
                             </div>

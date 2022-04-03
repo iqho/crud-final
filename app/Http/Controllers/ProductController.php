@@ -34,7 +34,7 @@ class ProductController extends Controller
             $imageName = Null;
 
             if($image){
-                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $imageName = date("dmYhis") . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('images'), $imageName);
             }
 
@@ -48,7 +48,7 @@ class ProductController extends Controller
 
         }catch (QueryException $e) {
 
-            return redirect()->back()->withErrors(['errors' => 'Unable to process request. Error:' . $e->getMessage()]);
+            return back()->withErrors(['errors' => $e->getMessage()]);
 
             // $errorCode = $e->errorInfo[1];
             // if ($errorCode == 1062) {
@@ -82,7 +82,7 @@ class ProductController extends Controller
             $image = $request->file('image');
 
             if ($image) {
-                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $imageName = date("dmYhis") . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('images'), $imageName);
 
                 if ($product->image !== null) {
@@ -99,7 +99,7 @@ class ProductController extends Controller
             $product->update();
 
         } catch (QueryException $e) {
-            return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
+            return back()->withErrors(['errors' => $e->getMessage()]);
         }
 
         return redirect()->route('products.index')->with('status', 'Product Updated Successfully.');
