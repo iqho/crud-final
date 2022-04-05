@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-10 p-2">
                                 @if ($product->image)
-                                  <img src="{{ asset('images/'.$product->image) }}" height="250" width="400">
+                                  <img src="{{ asset('product-images/'.$product->image) }}" height="250" width="400">
                                 @else
                                   <small>No Image</small>
                                 @endif

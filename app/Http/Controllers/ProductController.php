@@ -14,15 +14,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $viewBag['products'] = Product::get(['id', 'name', 'category_id', 'price', 'image', 'is_active']);
-        $viewBag['categories'] = Category::get(['id', 'category_name']);
+        $viewBag['products'] = $this->getAllProducts();
 
         return view('products.index', $viewBag);
     }
 
     public function create()
     {
-        $viewBag['categories'] = Category::where('is_active', true)->get(['id', 'category_name']);
+        $viewBag['categories'] = $this->getCategories();
 
         return view('products.create', $viewBag);
     }
@@ -30,35 +29,29 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request)
     {
         try {
-            $image = $request->file('image');
-            $imageName = Null;
+            $imageName = NULL;
 
-            if($image){
-                $imageName = date("dmYhis") . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('images'), $imageName);
+            if($request->hasFile('image')){
+                $image = $request->file('image');
+                $imageName = $this->getFileName($image->getClientOriginalExtension());
+                $image->move(public_path('product-images'), $imageName);
             }
 
             $product= new Product();
+
             $product->category_id = $request->category_id;
             $product->name = $request->name;
             $product->price = $request->price;
             $product->image = $imageName;
             $product->description = $request->description;
+
             $product->save();
 
         }catch (QueryException $e) {
-
             return back()->withErrors(['errors' => $e->getMessage()]);
-
-            // $errorCode = $e->errorInfo[1];
-            // if ($errorCode == 1062) {
-            //     return redirect()->back()->withErrors(['errors' => 'This product name already exits under selected category']);
-            // } else {
-            //     return redirect()->back()->withErrors(['errors' => 'Unable to process request.Error:' . $e->getMessage()]);
-            // }
         }
 
-      return redirect('products')->with('status','Product Created Successfully !');
+      return redirect('products')->with('status','Product has been Created Successfully !');
     }
 
     public function show(Product $product)
@@ -71,7 +64,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $viewBag['product'] = $product;
-        $viewBag['categories'] = Category::where('is_active', true)->get(['id', 'category_name']);
+        $viewBag['categories'] = $this->getCategories();
 
         return view('products.edit', $viewBag);
     }
@@ -79,15 +72,18 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, Product $product)
     {
         try {
-            $image = $request->file('image');
+            
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = $this->getFileName($image->getClientOriginalExtension());
+                $image->move(public_path('product-images'), $imageName);
 
-            if ($image) {
-                $imageName = date("dmYhis") . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('images'), $imageName);
-
-                if ($product->image !== null) {
-                    File::delete(public_path('images/'. $product->image ));
+                if ($product->image !== NULL) {
+                    if (file_exists(public_path('product-images/'. $product->image ))) {
+                        unlink(public_path('product-images/'. $product->image ));
+                    }
                 }
+
                 $product->image = $imageName;
             }
 
@@ -102,7 +98,7 @@ class ProductController extends Controller
             return back()->withErrors(['errors' => $e->getMessage()]);
         }
 
-        return redirect()->route('products.index')->with('status', 'Product Updated Successfully.');
+        return redirect()->route('products.index')->with('status', 'Product has been Updated Successfully.');
     }
 
     public function destroy(Product $product)
@@ -110,20 +106,44 @@ class ProductController extends Controller
         $image = $product->image;
 
         if($image){
-            File::delete(public_path('images/'. $image));
+            if (file_exists(public_path('product-images/'. $product->image ))) {
+                unlink(public_path('product-images/'. $product->image ));
+            }
         }
+
        $product->delete();
 
-        return redirect('products')->with('status','Product Delete Successfully !');
+        return redirect('products')->with('status','Product has been Deleted Successfully !');
     }
 
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request, Product $product)
     {
-        $product = Product::find($request->product_id);
-        $product->is_active = $request->status;
-        $product->save();
 
-        return response()->json(['success' => 'Product Active Status Change Successfully.']);
+        if($product->is_active == 1){
+            $product->is_active = 0;
+        } else {
+            $product->is_active = 1;
+        }
+
+        $product->update();
+
+        return redirect('products')->with('status','Product Active Status has been Changed Successfully !');
+    }
+
+    // Get All Products
+    private function getAllProducts(){
+        return Product::get(['id', 'name', 'category_id', 'price', 'image', 'is_active']);
+    }
+
+    // Get Categories
+    private function getCategories(){
+        return Category::where('is_active', true)->get(['id', 'category_name']);
+    }
+    
+    // Get File Name
+    private function getFileName($fileExtension){
+        // Image Name Format is - p-05042022121515.jpg
+        return 'p-'. date("dmYhis") . '.' . $fileExtension;
     }
 
 }

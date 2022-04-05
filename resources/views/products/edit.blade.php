@@ -69,7 +69,7 @@
                                 <input type="file" id="image" class="form-control" value="{{ old('image') }}" name="image">
                             </div>
                             <div class="col-md-2">
-                                <img src="{{ asset('images/'.$product->image) }}" alt="{{ $product->title }}" height="40" width="45">
+                                <img src="{{ asset('product-images/'.$product->image) }}" alt="{{ $product->title }}" height="40" width="45">
                             </div>
 
                         </div>
