@@ -13,7 +13,7 @@
                         <div class="card-header justify-content-center">
                             <h3 class="card-title">Show Product Data</h3>
                         </div>
-                        
+
                         <div class="row g-0">
 
                             <div class="col-2 p-2">
@@ -48,7 +48,7 @@
                                 <strong>Image :</strong>
                             </div>
                             <div class="col-10 p-2">
-                                @if ($product->image)
+                                @if ($product->image && (file_exists(public_path('product-images/'. $product->image ))))
                                   <img src="{{ asset('product-images/'.$product->image) }}" height="250" width="400">
                                 @else
                                   <small>No Image</small>

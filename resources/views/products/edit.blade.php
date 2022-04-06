@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
-@section('title','Update Product')
+@section('title', 'Update Product')
 
 @section('content')
-
     <div class="row justify-content-center">
         <div class="col-md-12 w-75">
 
@@ -38,8 +37,8 @@
                         <div class="form-group row p-3">
                             <label for="name" class="col-md-2 col-form-label">Name</label>
                             <div class="col-md-10">
-                                <input type="text" id="name" class="form-control" value="{{ $product->name }}" name="name"
-                                placeholder="Enter Product name" required autofocus>
+                                <input type="text" id="name" class="form-control" value="{{ $product->name }}"
+                                    name="name" placeholder="Enter Product name" required autofocus>
                             </div>
                         </div>
 
@@ -49,7 +48,9 @@
                                 <select class="form-control" name="category_id">
                                     <option value="">Choose Category</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" @if($category->id == $product->category_id) selected @endif >{{ $category->category_name }}</option>
+                                        <option value="{{ $category->id }}"
+                                            @if ($category->id == $product->category_id) selected @endif>
+                                            {{ $category->category_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -58,18 +59,22 @@
                         <div class="form-group row p-3">
                             <label for="price" class="col-md-2 col-form-label">Price</label>
                             <div class="col-md-10">
-                                <input type="number" id="price" class="form-control" value="{{ $product->price }}" name="price"
-                                placeholder="Enter Product price">
+                                <input type="number" id="price" class="form-control" value="{{ $product->price }}"
+                                    name="price" placeholder="Enter Product price">
                             </div>
                         </div>
 
                         <div class="form-group row p-3">
                             <label for="image" class="col-md-2 col-form-label">Image</label>
                             <div class="col-md-8">
-                                <input type="file" id="image" class="form-control" value="{{ old('image') }}" name="image">
+                                <input type="file" id="image" class="form-control" value="{{ old('image') }}"
+                                    name="image">
                             </div>
                             <div class="col-md-2">
-                                <img src="{{ asset('product-images/'.$product->image) }}" alt="{{ $product->title }}" height="40" width="45">
+                                @if ($product->image && file_exists(public_path('product-images/' . $product->image)))
+                                    <img src="{{ asset('product-images/' . $product->image) }}"
+                                        alt="{{ $product->title }}" height="40" width="45">
+                                @endif
                             </div>
 
                         </div>
@@ -78,7 +83,7 @@
                             <label for="description" class="col-md-2 col-form-label">Description</label>
                             <div class="col-md-10">
                                 <textarea type="text" id="description" class="form-control" name="description"
-                                placeholder="Enter Product Details" >{{ $product->description }}</textarea>
+                                    placeholder="Enter Product Details">{{ $product->description }}</textarea>
                             </div>
                         </div>
 

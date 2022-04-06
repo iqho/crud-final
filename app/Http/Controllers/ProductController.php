@@ -12,9 +12,11 @@ use App\Http\Requests\ProductUpdateRequest;
 
 class ProductController extends Controller
 {
+    private $getColumns = (['id', 'name', 'category_id', 'price', 'image', 'is_active']);
+
     public function index()
     {
-        $viewBag['products'] = $this->getAllProducts();
+        $viewBag['products'] = Product::get($this->getColumns);
 
         return view('products.index', $viewBag);
     }
@@ -33,11 +35,11 @@ class ProductController extends Controller
 
             if($request->hasFile('image')){
                 $image = $request->file('image');
-                $imageName = $this->getFileName($image->getClientOriginalExtension());
+                $imageName = $this->_getFileName($image->getClientOriginalExtension());
                 $image->move(public_path('product-images'), $imageName);
             }
 
-            $product= new Product();
+            $product = new Product();
 
             $product->category_id = $request->category_id;
             $product->name = $request->name;
@@ -64,7 +66,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $viewBag['product'] = $product;
-        $viewBag['categories'] = $this->getCategories();
+        $viewBag['categories'] = $this->_getCategories();
 
         return view('products.edit', $viewBag);
     }
@@ -72,7 +74,7 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, Product $product)
     {
         try {
-            
+
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = $this->getFileName($image->getClientOriginalExtension());
@@ -118,7 +120,6 @@ class ProductController extends Controller
 
     public function changeStatus(Request $request, Product $product)
     {
-
         if($product->is_active == 1){
             $product->is_active = 0;
         } else {
@@ -130,18 +131,14 @@ class ProductController extends Controller
         return redirect('products')->with('status','Product Active Status has been Changed Successfully !');
     }
 
-    // Get All Products
-    private function getAllProducts(){
-        return Product::get(['id', 'name', 'category_id', 'price', 'image', 'is_active']);
-    }
-
     // Get Categories
-    private function getCategories(){
+    private function _getCategories(){
         return Category::where('is_active', true)->get(['id', 'category_name']);
     }
-    
+
     // Get File Name
-    private function getFileName($fileExtension){
+    private function _getFileName($fileExtension){
+
         // Image Name Format is - p-05042022121515.jpg
         return 'p-'. date("dmYhis") . '.' . $fileExtension;
     }
