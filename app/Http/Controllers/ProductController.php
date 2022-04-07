@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $viewBag['categories'] = $this->getCategories();
+        $viewBag['categories'] = $this->_getCategories();
 
         return view('products.create', $viewBag);
     }

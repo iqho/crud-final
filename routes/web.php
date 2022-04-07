@@ -3,22 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\ProductController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::view('/', 'home');
 
-Route::group(['prefix'=>'products','as'=>'products.'], function(){
+Route::controller(ProductController::class)->prefix('products')->as('products.')->group(function () {
 
-    Route::get('/', [ProductController::class, 'index'])->name('index');
-    Route::post('/', [ProductController::class, 'store'])->name('store');
+    Route::get('/', 'index')->name('index');
+    Route::post('/', 'store')->name('store');
 
-    Route::get('/create', [ProductController::class, 'create'])->name('create');
+    Route::get('/create', 'create')->name('create');
 
-    Route::get('/{product} ', [ProductController::class, 'show'])->name('show');
-    Route::patch('/{product} ', [ProductController::class, 'update'])->name('update');
-    Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
+    Route::get('/{product} ', 'show')->name('show');
+    Route::patch('/{product} ', 'update')->name('update');
+    Route::delete('/{product}', 'destroy')->name('destroy');
 
-    Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
-    Route::get('/{product}/change-status', [ProductController::class, 'changeStatus'])->name('changeStatus');
+    Route::get('/{product}/edit', 'edit')->name('edit');
+    Route::get('/{product}/change-status', 'changeStatus')->name('changeStatus');
 
 });
