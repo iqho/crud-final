@@ -9,12 +9,12 @@
 
             <div class="row justify-content-center my-3 g-0">
                 <div class="col-12 text-end">
-                    <a class="btn btn-primary" href="{{ route('products.create') }}">Add Product</a>
+                    <a class="btn btn-primary" href="{{ route('categories.create') }}">Add New Category</a>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header"><h5>Products List</h5></div>
+                <div class="card-header"><h5>List of All Categories</h5></div>
                 <div class="card-body">
 
                     @if (session('status'))
@@ -29,38 +29,21 @@
                         <table id="datatable" class="table table-bordered dt-responsive nowrap">
                             <thead>
                                 <tr>
-                                    <th>SL</th>
+                                </tr>
+                                    <th class="text-center">SL</th>
                                     <th>Name</th>
-                                    <th class="text-center no-sort">Image</th>
-                                    <th class="text-center">Price</th>
-                                    <th class="text-center">Category</th>
                                     <th class="text-center no-sort">Active Status</th>
                                     <th class="text-center no-sort">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $key => $product)
+                                @foreach ($categories as $key => $category)
                                     <tr>
-                                        <td>{{ ++$key }}</td>
-                                        <td>{{ $product->name }}</td>
+                                        <td class="text-center">{{ ++$key }}</td>
+                                        <td>{{ $category->category_name }}</td>
                                         <td class="text-center">
-                                            @if ($product->image)
-                                                @if (file_exists(public_path('product-images/' . $product->image)))
-                                                    <img src="{{ asset('product-images/' . $product->image) }}" height="25"
-                                                        width="40">
-                                                @else
-                                                    <small>Image not exists in path</small>
-                                                @endif
-                                            @else
-                                                <small>No Image</small>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{{ $product->price }}</td>
-                                        <td class="text-center">{{ optional($product->category)->category_name ?? 'null' }}</td>
-                                        <td class="text-center">
-
-                                            @if ($product->is_active == 1)
-                                                <form action="{{ route('products.changeStatus', $product->id) }}"
+                                            @if ($category->is_active == 1)
+                                                <form action="{{ route('categories.changeStatus', $category->id) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('GET')
@@ -68,7 +51,7 @@
                                                     <button type="submit" class="btn btn-success">Active</button>
                                                 </form>
                                             @else
-                                                <form action="{{ route('products.changeStatus', $product->id) }}"
+                                                <form action="{{ route('categories.changeStatus', $category->id) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('GET')
@@ -80,17 +63,14 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('products.show', $product->id) }}"
-                                                    class="btn btn-primary me-1"><i class="fa fa-eye"></i></a>
-
-                                                <a href="{{ route('products.edit', $product->id) }}"
+                                                <a href="{{ route('categories.edit', $category->id) }}"
                                                     class="btn btn-info me-1"><i class="fa fa-edit"></i></a>
 
-                                                <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                                                <form action="{{ route('categories.destroy', $category->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete entry?')"><i
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure want to delete this category ?')"><i
                                                             class="fa fa-trash"></i></button>
                                                 </form>
 

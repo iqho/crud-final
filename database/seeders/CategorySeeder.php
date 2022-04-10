@@ -23,5 +23,7 @@ class CategorySeeder extends Seeder
             'category_name' => 'Accessories',
             'is_active' => '1'
         ]);
+
+        Category::factory()->count(10)->create();
     }
 }

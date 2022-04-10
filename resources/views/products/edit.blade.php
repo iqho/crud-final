@@ -6,9 +6,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12 w-75">
 
-            <div class="row justify-content-center mb-3 g-0">
+            <div class="row justify-content-center my-3 g-0">
                 <div class="col-12 text-end">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary">Back</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-primary">Back to Home</a>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                             </div>
                         @endif
 
-                        <div class="form-group row p-3">
+                        <div class="row p-3">
                             <label for="name" class="col-md-2 col-form-label">Name</label>
                             <div class="col-md-10">
                                 <input type="text" id="name" class="form-control" value="{{ $product->name }}"
@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row p-3">
+                        <div class="row p-3">
                             <label for="category" class="col-md-2 col-form-label">Category</label>
                             <div class="col-md-10">
                                 <select class="form-control" name="category_id">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row p-3">
+                        <div class="row p-3">
                             <label for="price" class="col-md-2 col-form-label">Price</label>
                             <div class="col-md-10">
                                 <input type="number" id="price" class="form-control" value="{{ $product->price }}"
@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row p-3">
+                        <div class="row p-3">
                             <label for="image" class="col-md-2 col-form-label">Image</label>
                             <div class="col-md-8">
                                 <input type="file" id="image" class="form-control" value="{{ old('image') }}"
@@ -76,10 +76,9 @@
                                         alt="{{ $product->title }}" height="40" width="45">
                                 @endif
                             </div>
-
                         </div>
 
-                        <div class="form-group row p-3">
+                        <div class="row p-3">
                             <label for="description" class="col-md-2 col-form-label">Description</label>
                             <div class="col-md-10">
                                 <textarea type="text" id="description" class="form-control" name="description"
@@ -88,7 +87,7 @@
                         </div>
 
                         <div class="card-footer float-end">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary">Update Product</button>
                         </div>
                     </div>
                 </div> <!-- /.card -->

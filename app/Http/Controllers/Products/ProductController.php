@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Products;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -41,15 +42,15 @@ class ProductController extends Controller
 
             $product = new Product();
 
-            $product->category_id = $request->category_id;
             $product->name = $request->name;
-            $product->price = $request->price;
             $product->image = $imageName;
             $product->description = $request->description;
+            $product->price = $request->price;
+            $product->category_id = $request->category_id;
 
             $product->save();
 
-        }catch (QueryException $e) {
+        } catch (QueryException $e) {
             return back()->withErrors(['errors' => $e->getMessage()]);
         }
 
@@ -118,9 +119,9 @@ class ProductController extends Controller
         return redirect('products')->with('status','Product has been Deleted Successfully !');
     }
 
-    public function changeStatus(Request $request, Product $product)
+    public function changeStatus(Product $product)
     {
-        if($product->is_active == 1){
+        if ($product->is_active == 1){
             $product->is_active = 0;
         } else {
             $product->is_active = 1;
@@ -139,8 +140,9 @@ class ProductController extends Controller
     // Get File Name
     private function _getFileName($fileExtension){
 
-        // Image Name Format is - p-05042022121515.jpg
+        // Image name format is - p-05042022121515.jpg
         return 'p-'. date("dmYhis") . '.' . $fileExtension;
     }
 
 }
+
