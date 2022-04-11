@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Categories;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryStoreRequest;
 
 class CategoryController extends Controller
 {
@@ -29,7 +30,7 @@ class CategoryController extends Controller
         return view('categories.edit', $viewBag);
     }
 
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
         try {
             $category = new Category();
@@ -45,8 +46,9 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('status', 'Category has been Created Successfully.');
     }
 
-    public function update(Request $request, Category $category)
+    public function update(CategoryStoreRequest $request, Category $category)
     {
+
         try {
 
             $category->category_name = $request->category_name;

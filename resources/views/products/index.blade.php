@@ -14,7 +14,9 @@
             </div>
 
             <div class="card">
-                <div class="card-header"><h5>Products List</h5></div>
+                <div class="card-header">
+                    <h5>Products List</h5>
+                </div>
                 <div class="card-body">
 
                     @if (session('status'))
@@ -46,8 +48,8 @@
                                         <td class="text-center">
                                             @if ($product->image)
                                                 @if (file_exists(public_path('product-images/' . $product->image)))
-                                                    <img src="{{ asset('product-images/' . $product->image) }}" height="25"
-                                                        width="40">
+                                                    <img src="{{ asset('product-images/' . $product->image) }}"
+                                                        height="25" width="40">
                                                 @else
                                                     <small>Image not exists in path</small>
                                                 @endif
@@ -56,7 +58,8 @@
                                             @endif
                                         </td>
                                         <td class="text-center">{{ $product->price }}</td>
-                                        <td class="text-center">{{ optional($product->category)->category_name ?? 'null' }}</td>
+                                        <td class="text-center">
+                                            {{ optional($product->category)->category_name ?? 'null' }}</td>
                                         <td class="text-center">
 
                                             @if ($product->is_active == 1)
@@ -86,11 +89,13 @@
                                                 <a href="{{ route('products.edit', $product->id) }}"
                                                     class="btn btn-info me-1"><i class="fa fa-edit"></i></a>
 
-                                                <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                                                <form action="{{ route('products.destroy', $product->id) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete entry?')"><i
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this product ?')"><i
                                                             class="fa fa-trash"></i></button>
                                                 </form>
 
@@ -108,15 +113,15 @@
 @endsection
 
 @push('scripts')
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#datatable').DataTable({
-            responsive: true,
-            columnDefs: [{
-                targets: 'no-sort',
-                orderable: false
-            }],
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').DataTable({
+                responsive: true,
+                columnDefs: [{
+                    targets: 'no-sort',
+                    orderable: false
+                }],
+            });
         });
-    });
-</script>
+    </script>
 @endpush

@@ -25,20 +25,23 @@
                     <div class="card-body">
 
                         @if ($errors->any())
-                            <div class="alert alert-danger p-1 m-0">
-                                <ul class="g-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                            <div class="row">
+                                <div class="col-12 alert alert-danger p-1 m-0">
+                                    <ul class="g-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
                         @endif
 
                         <div class="row p-3">
                             <label for="category_name" class="col-md-3 col-form-label">Category Name</label>
                             <div class="col-md-9">
-                                <input type="text" id="category_name" class="form-control" value="{{ $category->category_name }}"
-                                    name="category_name" placeholder="Enter category name" required autofocus>
+                                <input type="text" id="category_name" class="form-control"
+                                    value="{{ $category->category_name }}" name="category_name"
+                                    placeholder="Enter category name" required autofocus>
                             </div>
                         </div>
 

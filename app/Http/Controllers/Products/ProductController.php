@@ -13,11 +13,11 @@ use App\Http\Requests\ProductUpdateRequest;
 
 class ProductController extends Controller
 {
-    private $getColumns = (['id', 'name', 'category_id', 'price', 'image', 'is_active']);
+    private $_getColumns = (['id', 'name', 'category_id', 'price', 'image', 'is_active']);
 
     public function index()
     {
-        $viewBag['products'] = Product::get($this->getColumns);
+        $viewBag['products'] = Product::get($this->_getColumns);
 
         return view('products.index', $viewBag);
     }
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = $this->getFileName($image->getClientOriginalExtension());
+                $imageName = $this->_getFileName($image->getClientOriginalExtension());
                 $image->move(public_path('product-images'), $imageName);
 
                 if ($product->image !== NULL) {
