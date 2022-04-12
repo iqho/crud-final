@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'All Products')
+@section('title', 'All Categories')
 
 @section('content')
 
@@ -25,8 +25,20 @@
                         </div>
                     @endif
 
+                    @if ($errors->any())
+                    <div class="row">
+                        <div class="col-12 alert alert-danger p-1 m-0">
+                            <ul class="g-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="table-responsive">
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap">
+                        <table id="datatable" class="table table-bordered dt-responsive nowrap table-striped">
                             <thead>
                                 <tr>
                                 </tr>
@@ -42,6 +54,7 @@
                                         <td class="text-center">{{ ++$key }}</td>
                                         <td>{{ $category->category_name }}</td>
                                         <td class="text-center">
+
                                             @if ($category->is_active == 1)
                                                 <form action="{{ route('categories.changeStatus', $category->id) }}"
                                                     method="post">

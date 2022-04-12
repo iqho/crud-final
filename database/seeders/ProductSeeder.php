@@ -8,7 +8,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ProductSeeder extends Seeder
 {
-
     public function run()
     {
         Product::factory()->count(10)->create();

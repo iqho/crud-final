@@ -68,7 +68,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 // Hide success/errors message
-                $("div.alert").delay(5000).slideUp(300);
+                $("div.alert").delay(10000).slideUp(300);
             });
         </script>
 
