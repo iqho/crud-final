@@ -41,9 +41,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $i = $products->count();
+                                @endphp
                                 @foreach ($products as $key => $product)
                                     <tr>
-                                        <td>{{ ++$key }}</td>
+                                        <td>{{ $i-- }}</td>
                                         <td>{{ $product->name }}</td>
                                         <td class="text-center">
                                             @if ($product->image)
@@ -116,6 +119,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#datatable').DataTable({
+                order: [0,'desc'],
                 responsive: true,
                 columnDefs: [{
                     targets: 'no-sort',

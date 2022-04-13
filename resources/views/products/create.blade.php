@@ -81,6 +81,14 @@
                             </div>
                         </div>
 
+                        <div class="row p-2">
+                            <div class="col-md-2">Active Status</div>
+                            <div class="col-4">
+                                <input class="form-check-input" type="checkbox" name="is_active" value="1" id="is_active" style="transform: scale(1.5); margin-right:8px" checked>
+                                <label class="form-check-label" for="is_active">Active </label>
+                            </div>
+                        </div>
+
                         <div class="card-footer float-end">
                             <button type="submit" class="btn btn-primary">Add Product</button>
                         </div>

@@ -15,4 +15,9 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('is_active', true);
+    }
 }

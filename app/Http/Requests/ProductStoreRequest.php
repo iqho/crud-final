@@ -15,7 +15,8 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'is_active' => 'in:0,1',
         ];
     }
 }

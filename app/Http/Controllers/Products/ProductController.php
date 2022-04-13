@@ -17,7 +17,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $viewBag['products'] = Product::get($this->_getColumns);
+        $viewBag['products'] = Product::idDescending()->get($this->_getColumns);
 
         return view('products.index', $viewBag);
     }
@@ -47,6 +47,7 @@ class ProductController extends Controller
             $product->description = $request->description;
             $product->price = $request->price;
             $product->category_id = $request->category_id;
+            $product->is_active = $request->is_active ? 1 : 0;
 
             $product->save();
 
@@ -74,6 +75,7 @@ class ProductController extends Controller
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
+
         try {
 
             if ($request->hasFile('image')) {
@@ -94,6 +96,7 @@ class ProductController extends Controller
             $product->description = $request->description;
             $product->category_id = $request->category_id;
             $product->price = $request->price;
+            $product->is_active = $request->is_active ? 1 : 0;
 
             $product->update();
 
@@ -134,7 +137,7 @@ class ProductController extends Controller
 
     // Get Categories
     private function _getCategories(){
-        return Category::where('is_active', true)->get(['id', 'category_name']);
+        return Category::active()->get(['id', 'category_name']);
     }
 
     // Get File Name
