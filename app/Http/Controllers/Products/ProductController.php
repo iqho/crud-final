@@ -55,7 +55,7 @@ class ProductController extends Controller
             return back()->withErrors(['errors' => $e->getMessage()]);
         }
 
-      return redirect('products')->with('status','Product has been Created Successfully !');
+        return redirect()->route('products.index')->with('status','Product has been Created Successfully !');
     }
 
     public function show(Product $product)
@@ -119,7 +119,7 @@ class ProductController extends Controller
 
        $product->delete();
 
-        return redirect('products')->with('status','Product has been Deleted Successfully !');
+       return redirect()->route('products.index')->with('status','Product has been Deleted Successfully !');
     }
 
     public function changeStatus(Product $product)
@@ -132,7 +132,7 @@ class ProductController extends Controller
 
         $product->update();
 
-        return redirect('products')->with('status','Product Active Status has been Changed Successfully !');
+        return redirect()->route('products.index')->with('status','Product Active Status has been Changed Successfully !');
     }
 
     // Get Categories
