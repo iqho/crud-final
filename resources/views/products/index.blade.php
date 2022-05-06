@@ -64,25 +64,17 @@
                                         <td class="text-center">
                                             {{ optional($product->category)->category_name ?? 'null' }}</td>
                                         <td class="text-center">
-
-                                            @if ($product->is_active == 1)
-                                                <form action="{{ route('products.changeStatus', $product->id) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('GET')
-
+                                            <form action="{{ route('products.changeStatus', $product->id) }}" method="post">
+                                            @csrf
+                                            @method('GET')
+                                            
+                                                @if ($product->is_active == 1)
                                                     <button type="submit" class="btn btn-success">Active</button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('products.changeStatus', $product->id) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('GET')
-
+                                                @else
                                                     <button type="submit" class="btn btn-danger">Inactive</button>
-                                                </form>
-                                            @endif
+                                                @endif
 
+                                            </form>
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group" role="group">
